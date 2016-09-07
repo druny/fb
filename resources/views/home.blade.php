@@ -11,6 +11,7 @@
                 <div class="panel-body">
                    Привет {{ $user->name }}
                    <p>Твой email: {{ $user->email }}</p>
+                    <p>Уровень доступа: {{ $user->role_id }}</p>
                 </div>
             </div>
         </div>

@@ -26,7 +26,7 @@ class HomeController extends Controller
     {
         
         $data['user'] = Auth::user();
-        var_dump(Auth::guard('admins')->attempt(['name' => 'Андрей', 'email' => 'druny1955@rambler.ru', 'password' => 'password']));
+        //var_dump(Auth::user());
         
         return view('home', $data);
 

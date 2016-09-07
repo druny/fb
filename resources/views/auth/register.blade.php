@@ -79,7 +79,6 @@
                                 @endif
                             </div>
                         </div>
-                        <input type="text" name="role_id" value="2">
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">
