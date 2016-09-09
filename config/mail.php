@@ -29,7 +29,7 @@ return [
     |
     */
 
-    'host' => env('MAIL_HOST', 'smtp.rambler.ru'),
+    'host' => env('MAIL_HOST', 'mailtrap.io'),
 
     /*
     |--------------------------------------------------------------------------
@@ -56,8 +56,8 @@ return [
     */
 
     'from' => [
-        'address' => 'druny195@rambler.ru',
-        'name' => 'Andrey',
+        'address' => 'ce333b5ab6-a54134@inbox.mailtrap.io',
+        'name' => 'b111d2bd289176',
     ],
 
     /*
