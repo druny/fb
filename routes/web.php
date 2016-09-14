@@ -17,12 +17,26 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index');
-Route::get('/home/test', 'HomeController@test');
+Route::group(['prefix' => 'home'], function () {
 
-Route::get('/test', function() {
+    Route::get('/', 'HomeController@index')->middleware('auth', 'role:user');
+    Route::get('/test', 'HomeController@test')->middleware('auth');
 
-	echo "string";
+});
 
-})->middleware('auth');
 
+Route::get('/test/{id?}', function($id) {
+
+	var_dump(Route::currentroutename());
+    if(isset($id)) {
+        echo $id;
+    }
+
+})->name('test');
+
+/*Route::group([
+        'middleware' => 'auth',
+        'domain' => 'google.com'
+    ], function (){
+    echo 123;
+} );*/

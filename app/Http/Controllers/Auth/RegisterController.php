@@ -35,7 +35,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('guest');var_dump();
     }
 
     /**
@@ -63,14 +63,15 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $role_id = '2';
-
+        $token = str_random(25);
         return User::create([
             'name' => $data['name'],
             'login' => $data['login'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-            'role_id' => $role_id,
+            'role_id' => '2',
+            'active' => '0',
+            'token' => $token
         ]);
     }
 }

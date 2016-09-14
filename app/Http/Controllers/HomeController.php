@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,10 +25,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        
+
         $data['user'] = Auth::user();
-        //var_dump(Auth::user());
-        
+
         return view('home', $data);
 
     }
@@ -36,6 +36,8 @@ class HomeController extends Controller
 
         if(Auth::check()) {
             echo "Вы авторизованы";
+
+            //return redirect()->route('test2', ['id' => 2]);
         } else {
             echo "Вы не авторизованы";
             //return redirect()->intended('dashboard');
