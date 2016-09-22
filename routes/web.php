@@ -1,5 +1,6 @@
 <?php
 
+use App\Mail\ForgotPassword;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -10,6 +11,9 @@
 | to using a Closure or controller method. Build something great!
 |
 */
+Route::get('/lol', function () {
+    Mail::to('druny195@rambler.ru')->send(new ForgotPassword);
+});
 
 Route::get('/', function () {
     return view('welcome');

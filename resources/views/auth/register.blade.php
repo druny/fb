@@ -9,7 +9,9 @@
                 <div class="panel-body">
                     <form class="form-horizontal" role="form" method="POST" action="{{ url('/register') }}">
                         {{ csrf_field() }}
-
+                        @if(Session::has('message'))
+                            {!!Session::get('message')!!}
+                        @endif
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                             <label for="name" class="col-md-4 control-label">Name</label>
 
@@ -20,6 +22,21 @@
                                     <span class="help-block">
                                         <strong>
                                         {{ $errors->first('name') }}
+                                        </strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group{{ $errors->has('surname') ? ' has-error' : '' }}">
+                            <label for="sur_name" class="col-md-4 control-label">Surname</label>
+
+                            <div class="col-md-6">
+                                <input id="surname" type="text" class="form-control" name="surname" value="{{ old('surname') }}" required>
+
+                                @if ($errors->has('surname'))
+                                    <span class="help-block">
+                                        <strong>
+                                        {{ $errors->first('surname') }}
                                         </strong>
                                     </span>
                                 @endif
@@ -79,6 +96,7 @@
                                 @endif
                             </div>
                         </div>
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Mail\ForgotPassword;
 use App\User;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
+
 
 class RegisterController extends Controller
 {
@@ -35,7 +37,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');var_dump();
+        $this->middleware('guest');
     }
 
     /**
@@ -47,11 +49,11 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|max:255',
+            'name' => 'required|max:100',
+            'surname' => 'required|',
             'login' => 'required|max:255|unique:users',
-            'email' => 'required|email|max:255|unique:users',
+            'email' => 'required|email|max:255|unique:users|unique:confirm_users',
             'password' => 'required|min:6|confirmed',
-            'role_id' => 'required',
         ]);
     }
 
@@ -64,14 +66,18 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         $token = str_random(25);
-        return User::create([
+        $user =  User::create([
             'name' => $data['name'],
             'login' => $data['login'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
             'role_id' => '2',
             'active' => '0',
-            'token' => $token
         ]);
+
+        Mail::to($data['email'])->send(new ForgotPassword);
+
+
+
     }
 }

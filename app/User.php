@@ -37,4 +37,11 @@ class User extends Authenticatable
             ->get();
         return $role;
     }
+
+    public function getActiveStatus($column, $login) {
+        return DB::table('users')
+            ->select('active')
+            ->where($column, '=', $login)
+            ->get();
+    }
 }

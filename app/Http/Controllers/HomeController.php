@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ForgotPassword;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +28,7 @@ class HomeController extends Controller
     {
 
         $data['user'] = Auth::user();
-
+        Mail::to('druny195@rambler.ru')->send(new ForgotPassword);
         return view('home', $data);
 
     }
