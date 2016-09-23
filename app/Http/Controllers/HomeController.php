@@ -29,7 +29,6 @@ class HomeController extends Controller
     {
 
         $data['user'] = Auth::user();
-        Mail::to('druny195@rambler.ru')->send(new ConfirmRegister);
         return view('home', $data);
 
     }
