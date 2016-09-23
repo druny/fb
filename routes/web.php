@@ -1,6 +1,6 @@
 <?php
 
-use App\Mail\ForgotPassword;
+use App\Mail\ConfirmRegister;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,9 +11,7 @@ use App\Mail\ForgotPassword;
 | to using a Closure or controller method. Build something great!
 |
 */
-Route::get('/lol', function () {
-    Mail::to('druny195@rambler.ru')->send(new ForgotPassword);
-});
+Route::get('/register/confirm/{token}', 'Auth\RegisterController@confirm');
 
 Route::get('/', function () {
     return view('welcome');

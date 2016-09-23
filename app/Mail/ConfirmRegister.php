@@ -7,18 +7,20 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class ForgotPassword extends Mailable
+class ConfirmRegister extends Mailable
 {
     use Queueable, SerializesModels;
 
+
+    public $link;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($link)
     {
-        //
+        $this->link = $link;
     }
 
     /**
@@ -28,6 +30,7 @@ class ForgotPassword extends Mailable
      */
     public function build()
     {
-        return $this->view('auth/verification');
+        $data['link'] =  $this->link;
+        return $this->view('auth/verification', $data);
     }
 }

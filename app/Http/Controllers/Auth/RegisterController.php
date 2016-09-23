@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Mail\ForgotPassword;
+use App\Mail\ConfirmRegister;
+use App\UserConfirm;
+use App\Http\Controllers\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\User;
 use Validator;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -52,7 +56,7 @@ class RegisterController extends Controller
             'name' => 'required|max:100',
             'surname' => 'required|',
             'login' => 'required|max:255|unique:users',
-            'email' => 'required|email|max:255|unique:users|unique:confirm_users',
+            'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
         ]);
     }
@@ -65,9 +69,9 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $token = str_random(25);
-        $user =  User::create([
+        return  User::create([
             'name' => $data['name'],
+            'surname' => $data['surname'],
             'login' => $data['login'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
@@ -75,9 +79,30 @@ class RegisterController extends Controller
             'active' => '0',
         ]);
 
-        Mail::to($data['email'])->send(new ForgotPassword);
 
+    }
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+        $user = $this->create($request->all());
+        $this->sendVerificationMail($user);
 
+        return 'Зайдите на введенную вами почту и продолжите регистрацию';
 
+    }
+
+    public function sendVerificationMail($user) {
+
+        $userConfirm = new UserConfirm();
+        $token = $userConfirm->createToken($user->id);
+        $link = '/register/confirm/' . $token;
+
+        Mail::to($user->email)->send(new ConfirmRegister($link));
+    }
+
+    public function confirm($token) {
+        $userConfirm = new UserConfirm();
+        $userConfirm->activateUser($token);
+        return redirect($this->redirectPath());
     }
 }
