@@ -87,7 +87,8 @@ class RegisterController extends Controller
         $user = $this->create($request->all());
         $this->sendVerificationMail($user);
 
-        return 'Зайдите на введенную вами почту и продолжите регистрацию';
+        $data['msg'] = 'Зайдите на введенную вами почту и продолжите регистрацию';
+        return response()->view('errors.error', $data);
 
     }
 
@@ -95,14 +96,21 @@ class RegisterController extends Controller
 
         $userConfirm = new UserConfirm();
         $token = $userConfirm->createToken($user->id);
-        $link = '/register/confirm/' . $token;
-
-        Mail::to($user->email)->send(new ConfirmRegister($link));
+        if($token) {
+            $link = '/register/confirm/' . $token;
+            Mail::to($user->email)->send(new ConfirmRegister($link));
+        }
     }
 
     public function confirm($token) {
         $userConfirm = new UserConfirm();
-        $userConfirm->activateUser($token);
-        return redirect($this->redirectPath());
+        $active = $userConfirm->activateUser($token);
+        if($active == null) {
+            $data['msg'] = 'Аккаунт уже подтвержден или ссылка не корректна';
+            return response()->view('errors.error', $data);
+        }
+        
+        $data['msg'] = 'Аккаунт успешно подтвержден';
+        return response()->view('errors.error', $data);
     }
 }

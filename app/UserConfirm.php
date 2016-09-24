@@ -26,7 +26,7 @@ class UserConfirm extends Model
         return $token;
     }
 
-    public function tokenUpdate($id) {
+    public function updateToken($id) {
         $token = $this->getToken();
 
         DB::table($this->table)->where('user_id', $id)

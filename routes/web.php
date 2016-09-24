@@ -21,7 +21,7 @@ Auth::routes();
 
 Route::group(['prefix' => 'home'], function () {
 
-    Route::get('/', 'HomeController@index')->middleware('auth', 'role:user');
+    Route::get('/', 'HomeController@index')->middleware('role:user');
     Route::get('/test', 'HomeController@test')->middleware('auth');
 
 });
@@ -35,6 +35,7 @@ Route::get('/test/{id?}', function($id) {
     }
 
 })->name('test');
+
 
 /*Route::group([
         'middleware' => 'auth',

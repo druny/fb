@@ -68,7 +68,8 @@ class LoginController extends Controller
 
             return $this->sendFailedLoginResponse($request);
         } else {
-            return 'Подтвердите регистрацию';
+            $data['msg'] = 'Подтвердите регистрацию. Вам было повторно отправлено сообщение с сылкой на подтверждение';
+            return response()->view('errors.error', $data);
         }
     }
 
@@ -78,7 +79,7 @@ class LoginController extends Controller
         $status->active;
 
         $userConfirm = new UserConfirm();
-        $token = $userConfirm->tokenUpdate($status->id);
+        $token = $userConfirm->updateToken($status->id);
         $link = '/register/confirm/' . $token;
 
         if($status->active == 0) {
