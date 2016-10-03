@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\User;
+use App\Models\User;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,32 +16,19 @@ class RoleCheck
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next, $role)
+    public function handle($request, Closure $next)
     {
-
-
-        $data['user'] = Auth::user();
-
-        if(isset( $data['user'] )) {
-            $getRole = new User();
-            $roleName = $getRole->getRoleType($data['user']->role_id);
-            $data['user']['role'] =  $roleName[0]->role;
+        if ($request->user() === null) {
+            return redirect()->route('login');
         }
 
-        $pre_current = url('/');
-        $ful_current = url()->current();
-        $current = explode($pre_current, $ful_current);
+        $action = $request->route()->getAction();
+        $roles = isset($action['roles']) ? $action['roles'] : null;
 
-        if($data['user']['role'] == $role) {
-             if($current['1'] !== '/home'){
-                 return redirect('/home');
-             }
-        } else {
-            if($current['1'] !== '/home/test'){
-                return redirect('/home/test');
-            }
+        if($request->user()->hasAnyRole($roles) || !$roles) {
+            return $next($request);
         }
 
-        return $next($request);
+        return response('У вас нет прав для просмотра этой страцниы', 401);
     }
 }

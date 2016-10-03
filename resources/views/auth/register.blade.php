@@ -12,6 +12,16 @@
                         @if(Session::has('message'))
                             {!!Session::get('message')!!}
                         @endif
+                        @if(session('warning'))
+                            <div class="alert alert-warning">
+                                {{ session('warning') }}
+                            </div>
+                        @endif
+                        @if(session('status'))
+                            <div class="alert alert-warning">
+                                {{ session('status') }}
+                            </div>
+                        @endif
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                             <label for="name" class="col-md-4 control-label">Name</label>
 

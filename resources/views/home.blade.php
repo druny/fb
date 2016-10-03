@@ -11,7 +11,7 @@
                 <div class="panel-body">
                    Привет {{ $user->name }}
                    <p>Твой email: {{ $user->email }}</p>
-                    <p>Тип пользователя: {{ $user->role }}</p>
+                    <p>Тип пользователя: {{ $user->role->role }}</p>
                 </div>
             </div>
         </div>

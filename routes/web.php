@@ -19,10 +19,10 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::group(['prefix' => 'home'], function () {
+Route::group(['prefix' => 'home', 'middleware' => 'roles', 'roles' => 'User'], function () {
 
-    Route::get('/', 'HomeController@index')->middleware('role:user');
-    Route::get('/test', 'HomeController@test')->middleware('auth');
+    Route::get('/', 'HomeController@index');
+    Route::get('/test', 'HomeController@test');
 
 });
 

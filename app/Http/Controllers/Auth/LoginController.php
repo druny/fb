@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\UserConfirm;
+use App\Models\UserConfirm;
 use App\Mail\ConfirmRegister;
 use Illuminate\Support\Facades\Mail;
-use App\User;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
@@ -32,6 +32,8 @@ class LoginController extends Controller
      */
     protected $redirectTo = '/home';
 
+    protected $adminRedirectTo = '/admin';
+
     /**
      * Create a new controller instance.
      *
@@ -42,6 +44,21 @@ class LoginController extends Controller
         $this->middleware('guest', ['except' => 'logout']);
 
     }
+    public function username()
+    {
+        return 'login';
+    }
+/*    public function redirectPath()
+    {
+        //TODO: Optimize this algorytm
+        if (property_exists($this, 'redirectTo')) {
+            if (Auth::user()->hasAnyRole('Admin')) {
+                $this->redirectTo = property_exists($this, 'adminRedirectTo') ? $this->adminRedirectTo : $this->redirectTo;
+            }
+            return $this->redirectTo;
+        }
+        return '/home';
+    }*/
     public function login(Request $request)
     {
         $this->validateLogin($request);
@@ -54,7 +71,7 @@ class LoginController extends Controller
 
             return $this->sendLockoutResponse($request);
         }
-        if($this->getActiveStatus($request) === true) {
+        if($this->getActiveStatus($request)) {
             $credentials = $this->credentials($request);
 
             if ($this->guard()->attempt($credentials, $request->has('remember'))) {
@@ -68,8 +85,7 @@ class LoginController extends Controller
 
             return $this->sendFailedLoginResponse($request);
         } else {
-            $data['msg'] = 'Подтвердите регистрацию. Вам было повторно отправлено сообщение с сылкой на подтверждение';
-            return response()->view('errors.error', $data);
+            return back()->with('warning', 'Ваш аккаунт не подтвержден. На ваш электронный ящик было отправлено письмо для подтверждения');
         }
     }
 
@@ -80,10 +96,9 @@ class LoginController extends Controller
 
         $userConfirm = new UserConfirm();
         $token = $userConfirm->updateToken($status->id);
-        $link = '/register/confirm/' . $token;
 
         if($status->active == 0) {
-            Mail::to($status->email)->send(new ConfirmRegister($link));
+            Mail::to($status->email)->send(new ConfirmRegister($token));
             return false;
         }
          return true;

@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Mail\ConfirmRegister;
-use App\UserConfirm;
+use App\Models\UserConfirm;
 use App\Http\Controllers\Auth;
 use Illuminate\Support\Facades\Mail;
-use App\User;
+use App\Models\User;
 use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -78,8 +78,6 @@ class RegisterController extends Controller
             'role_id' => '2',
             'active' => '0',
         ]);
-
-
     }
     public function register(Request $request)
     {
@@ -87,8 +85,7 @@ class RegisterController extends Controller
         $user = $this->create($request->all());
         $this->sendVerificationMail($user);
 
-        $data['msg'] = 'Зайдите на введенную вами почту и продолжите регистрацию';
-        return response()->view('errors.error', $data);
+        return back()->with('status','Зайдите на введенную вами почту и продолжите регистрацию' );
 
     }
 
@@ -97,8 +94,7 @@ class RegisterController extends Controller
         $userConfirm = new UserConfirm();
         $token = $userConfirm->createToken($user->id);
         if($token) {
-            $link = '/register/confirm/' . $token;
-            Mail::to($user->email)->send(new ConfirmRegister($link));
+            Mail::to($user->email)->send(new ConfirmRegister($token));
         }
     }
 
@@ -107,10 +103,10 @@ class RegisterController extends Controller
         $active = $userConfirm->activateUser($token);
         if($active == null) {
             $data['msg'] = 'Аккаунт уже подтвержден или ссылка не корректна';
-            return response()->view('errors.error', $data);
+        } else {
+            $data['msg'] = 'Аккаунт успешно подтвержден';
+            Auth::login($active);
         }
-        
-        $data['msg'] = 'Аккаунт успешно подтвержден';
         return response()->view('errors.error', $data);
     }
 }

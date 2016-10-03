@@ -30,7 +30,6 @@ class ConfirmRegister extends Mailable
      */
     public function build()
     {
-        $data['link'] =  $this->link;
-        return $this->view('auth/verification', $data);
+        return $this->view('mail/verification');
     }
 }
