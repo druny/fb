@@ -2,19 +2,18 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Mail\ConfirmRegister;
 use Illuminate\Support\Facades\Mail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class HomeController extends Controller
+
+class CabinetController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
+
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -22,7 +21,7 @@ class HomeController extends Controller
     }
 
     /**
-     * Show the application dashboard.
+     * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
@@ -34,16 +33,12 @@ class HomeController extends Controller
 
     }
 
-    public function test() {
-
-        if(Auth::check()) {
-            echo "Вы авторизованы";
-
-            //return redirect()->route('test2', ['id' => 2]);
-        } else {
-            echo "Вы не авторизованы";
-            //return redirect()->intended('dashboard');
-
-        }
+    public function settings() {
+        return view('cabinet.settings');
     }
+    public function edit($id)
+    {
+        //
+    }
+
 }

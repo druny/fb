@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Mail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
+
 
 class LoginController extends Controller
 {
@@ -30,7 +32,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/cabinet';
 
     protected $adminRedirectTo = '/admin';
 
@@ -48,17 +50,16 @@ class LoginController extends Controller
     {
         return 'login';
     }
-/*    public function redirectPath()
+    public function redirectPath()
     {
-        //TODO: Optimize this algorytm
         if (property_exists($this, 'redirectTo')) {
             if (Auth::user()->hasAnyRole('Admin')) {
                 $this->redirectTo = property_exists($this, 'adminRedirectTo') ? $this->adminRedirectTo : $this->redirectTo;
             }
             return $this->redirectTo;
         }
-        return '/home';
-    }*/
+        return '/cabinet';
+    }
     public function login(Request $request)
     {
         $this->validateLogin($request);

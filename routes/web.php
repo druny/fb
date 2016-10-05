@@ -19,12 +19,23 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::group(['prefix' => 'home', 'middleware' => 'roles', 'roles' => 'User'], function () {
+Route::group(['prefix' => 'home', 'roles' => ['Admin', 'User']], function () {
 
     Route::get('/', 'HomeController@index');
     Route::get('/test', 'HomeController@test');
 
 });
+
+Route::group(['namespace' => 'Admin', 'role' => 'Admin'], function() {
+    Route::resource('admin', 'AdminController');
+});
+
+Route::group(['prefix' => 'cabinet', 'roles' => ['Admin', 'User']], function() {
+    Route::get('/', 'CabinetController@index');
+    Route::get('/settings', 'CabinetController@settings');
+});
+
+
 
 
 Route::get('/test/{id?}', function($id) {

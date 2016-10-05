@@ -31,4 +31,5 @@ class RoleCheck
 
         return response('У вас нет прав для просмотра этой страцниы', 401);
     }
+
 }
