@@ -11,31 +11,39 @@ use App\Mail\ConfirmRegister;
 | to using a Closure or controller method. Build something great!
 |
 */
-Route::get('/register/confirm/{token}', 'Auth\RegisterController@confirm');
-
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Auth::routes();
+Route::get('/register/confirm/{token}', 'Auth\RegisterController@confirm');
 
-Route::group(['prefix' => 'home', 'roles' => ['Admin', 'User']], function () {
+//Post
+Route::get('/', 'PostController@index');
+Route::get('/post/{slug}', [
+    'uses' => 'PostController@show',
+    'as' => 'post.show'
+]);
 
-    Route::get('/', 'HomeController@index');
-    Route::get('/test', 'HomeController@test');
 
-});
-
+//Admin
 Route::group(['namespace' => 'Admin', 'role' => 'Admin'], function() {
-    Route::resource('admin', 'AdminController');
+    Route::resource('/admin', 'AdminController');
 });
 
+//Cabinet
 Route::group(['prefix' => 'cabinet', 'roles' => ['Admin', 'User']], function() {
     Route::get('/', 'CabinetController@index');
     Route::get('/settings', 'CabinetController@settings');
 });
 
 
+
+//test
+
+/*Route::group(['prefix' => 'home', 'roles' => ['Admin', 'User']], function () {
+
+    Route::get('/', 'HomeController@index');
+    Route::get('/test', 'HomeController@test');
+
+});*/
 
 
 Route::get('/test/{id?}', function($id) {

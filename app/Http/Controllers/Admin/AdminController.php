@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use Validator;
+use App\Helpers\ImageHelper;
 
 class AdminController extends Controller
 {
@@ -19,74 +20,78 @@ class AdminController extends Controller
 
     public function index(Request $request)
     {
-        $posts = Post::orderBy('id', 'desc')->paginate(2);
-        //dd($posts);
+        $posts = Post::orderBy('id', 'desc')->paginate(config('post.pagination'));
         return view('admin.home', ['posts' => $posts]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Request $request)
+
+    public function create()
     {
-        echo 'GET	/photos/create	create	photos.create';
+        return view('admin.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+
+    public function store( Requests\CheckOfPost $request )
     {
-        echo 'POST	/photos	store	photos.store';
+        $post = new Post($request->all());
+
+        if($request->hasFile('img'))  {
+            $post->img = ImageHelper::upload($request->file('img'));
+        }
+        $post->date = date('m-d-Y');
+        $post->time = date('G' + 1 . ':i:s');
+        $post->save();
+        return redirect()->route('admin.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function show($id)
     {
         echo 'GET	/photos/{photo}	show	photos.show';
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+
+    public function edit(Request $request, $slug)
     {
-        echo 'GET	/photos/{photo}/edit	edit	photos.edit';
+
+        $posts = new Post();
+        $post = $posts->getSlug($slug);
+        return view('admin.edit', ['post' => $post]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+
+    public function update(Requests\CheckOfPost $request, $slug)
     {
-        echo 'PUT/PATCH	/photos/{photo}	update	photos.update';
+
+        $posts = new Post();
+        $post = $posts->getSlug($slug);
+
+        $img_name = $post->img;
+        $post->fill($request->all());
+
+        if($request->hasFile('img')) {
+            $post->img = ImageHelper::upload($request->file('img'));
+            if($img_name) {
+                ImageHelper::delete($img_name);
+            }
+        }
+
+        $post->save();
+        return redirect()->route('admin.edit', $post->slug);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+
+    public function destroy(Request $request, $slug)
     {
-        echo 'DELETE	/photos/{photo}	destroy	photos.destroy';
+        $posts = new Post();
+        $post = $posts->getSlug($slug);
+
+
+
+        if($post->img) {
+            ImageHelper::delete($post->img);
+        }
+        $post->delete();
+        return redirect()->route('admin.index');
     }
 }

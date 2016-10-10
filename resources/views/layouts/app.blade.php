@@ -19,6 +19,7 @@
             'csrfToken' => csrf_token(),
         ]); ?>
     </script>
+    <script src="/js/tinymce/tinymce.min.js"></script>
 </head>
 <body>
     <nav class="navbar navbar-default navbar-static-top">
@@ -58,6 +59,14 @@
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
+                                @if(Auth::user()->role->role == 'admin')
+                                    <li>
+                                        <a href="{{ route('admin.index') }}">Админка</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('admin.create') }}">Добавить пост</a>
+                                    </li>
+                                @endif
                                 <li>
                                     <a href="{{ url('/cabinet/settings') }}">Настройки</a>
                                 </li>
@@ -65,7 +74,7 @@
                                     <a href="{{ url('/logout') }}"
                                         onclick="event.preventDefault();
                                                  document.getElementById('logout-form').submit();">
-                                        Logout
+                                        Выход
                                     </a>
 
                                     <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
@@ -83,6 +92,8 @@
     @yield('content')
 
     <!-- Scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="/js/app.js"></script>
+
 </body>
 </html>
