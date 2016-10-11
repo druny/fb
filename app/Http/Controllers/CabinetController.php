@@ -29,7 +29,7 @@ class CabinetController extends Controller
     {
 
         $data['user'] = Auth::user();
-        return view('home', $data);
+        return view('cabinet.index', $data);
 
     }
 

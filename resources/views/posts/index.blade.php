@@ -14,6 +14,8 @@
                                     <span class="label label-primary">
                                         {{ $post_value->date }} {{ $post_value->time }}
                                     </span>
+                                    &nbsp;
+                                    <a href="{{ route('category.show', $post_value->category->slug) }}">{{ $post_value->category->name }}</a>
                                     <img class="img-rounded" src="/uploads/original/{{ $post_value->img }}" alt="{{ $post_value->img_path }}">
                                     <div class="caption">
                                         <h3>{{ $post_value->title }}</h3>
@@ -22,6 +24,7 @@
                                         <p>
                                             <a href="/post/{{ $post_value->slug }}" class="btn btn-primary" role="button">More</a>
                                         </p>
+
                                     </div>
                                 </div>
                             </div>
@@ -29,7 +32,7 @@
                         @endforeach
                     </div>
                 </div>
-                {{ $posts->links() }}
+                    {{ $posts->links() }}
             </div>
         </div>
     </div>

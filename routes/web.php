@@ -34,6 +34,14 @@ Route::group(['prefix' => 'cabinet', 'roles' => ['Admin', 'User']], function() {
     Route::get('/settings', 'CabinetController@settings');
 });
 
+Route::get('tag/{tag}', [
+   'uses' => 'PostController@showPostsByTag',
+    'as' => 'show.tag'
+]);
+Route::get('category/{category}', [
+    'uses' => 'PostController@showPostsByCategory',
+    'as' => 'category.show'
+]);
 
 
 //test
