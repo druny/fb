@@ -24,8 +24,10 @@ Route::get('/post/{slug}', [
 
 
 //Admin
-Route::group(['namespace' => 'Admin', 'role' => 'Admin'], function() {
-    Route::resource('/admin', 'AdminController');
+Route::group(['namespace' => 'Admin', 'roles' => 'Admin'], function() {
+    Route::resource('admin', 'AdminController');
+    Route::resource('categories', 'CategoryController', ['except' => 'show']);
+    Route::resource('tags', 'TagController', ['expect' => 'show']);
 });
 
 //Cabinet
@@ -34,11 +36,11 @@ Route::group(['prefix' => 'cabinet', 'roles' => ['Admin', 'User']], function() {
     Route::get('/settings', 'CabinetController@settings');
 });
 
-Route::get('tag/{tag}', [
+Route::get('/tag/{tag}', [
    'uses' => 'PostController@showPostsByTag',
-    'as' => 'show.tag'
+    'as' => 'tag.show'
 ]);
-Route::get('category/{category}', [
+Route::get('/category/{category}', [
     'uses' => 'PostController@showPostsByCategory',
     'as' => 'category.show'
 ]);

@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-
+use App\Models\Category;
+use App\Models\Tag;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
@@ -27,7 +28,9 @@ class AdminController extends Controller
 
     public function create()
     {
-        return view('admin.create');
+        $categories = Category::all();
+        $tags = Tag::all();
+        return view('admin.create', ['categories' => $categories, 'tags' => $tags ]);
     }
 
 
@@ -35,12 +38,12 @@ class AdminController extends Controller
     {
         $post = new Post($request->all());
 
-        if($request->hasFile('img'))  {
+       if($request->hasFile('img'))  {
             $post->img = ImageHelper::upload($request->file('img'));
         }
-        $post->date = date('m-d-Y');
-        $post->time = date('G' + 1 . ':i:s');
+
         $post->save();
+        $post->tags()->attach($request->tags);
         return redirect()->route('admin.index');
     }
 
@@ -56,7 +59,8 @@ class AdminController extends Controller
 
         $posts = new Post();
         $post = $posts->getSlug($slug);
-        return view('admin.edit', ['post' => $post]);
+        $categories = Category::all();
+        return view('admin.edit', ['post' => $post, 'categories' => $categories]);
     }
 
 
@@ -85,8 +89,6 @@ class AdminController extends Controller
     {
         $posts = new Post();
         $post = $posts->getSlug($slug);
-
-
 
         if($post->img) {
             ImageHelper::delete($post->img);

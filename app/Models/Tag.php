@@ -7,7 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class Tag extends Model
 {
 
-    public function post() {
-        return $this->belongsTo('App\Models\Post');
+    protected $fillable = ['name', 'description'];
+
+    public function posts() {
+        return $this->belongsToMany('App\Models\Post');
+    }
+
+    public function scopeTag($query, $tag) {
+        return $query->where('name', $tag);
     }
 }

@@ -20,11 +20,11 @@ class ImageHelper
 
 
         Image::make($img)->resize(800, 800)
-            ->save($path . config('image.originalFolder') . '/' . $name)
+            ->save($path . '/' . config('image.originalFolder') . '/' . $name)
             ->resize(150, 150)
-            ->save($path . config('image.mediumFolder') . '/' . $name)
+            ->save($path . '/' . config('image.mediumFolder') . '/' . $name)
             ->resize(60, 60)
-            ->save($path . config('image.smallFolder') . '/' . $name);
+            ->save($path . '/' . config('image.smallFolder') . '/' . $name);
 
         return $name;
 

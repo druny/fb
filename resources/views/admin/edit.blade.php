@@ -17,7 +17,7 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Added new post</div>
+                    <div class="panel-heading">Edit new post</div>
 
                     <div class="panel-body">
                         <form class="form-horizontal" role="form" method="POST" action="{{ route('admin.update', $post->slug) }}"  enctype="multipart/form-data">
@@ -65,6 +65,18 @@
                                     @endif
                                 </div>
                             </div>
+                            <div class="category">
+                                <label for="category">Select category</label>
+                                <select name="category_id" class="form-control" id="category">
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}"
+                                        @if($post->category->name === $category->name)
+                                            selected
+                                         @endif>{{ $category->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <br>
                             <label for="img" class="uploadButton">Загрузить изображение</label>
                             <input style="opacity: 0; z-index: -1;" type="file" multiple accept="image/*" name="img" id="img">
 

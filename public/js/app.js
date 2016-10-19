@@ -30,6 +30,9 @@ var slug = function(str) {
 $('#title').focusout(function() {
     $('#slug').val(slug($('#title').val()));
 });
+$('#name').focusout(function() {
+    $('#slug').val(slug($('#name').val()));
+});
 
 //upload img
 

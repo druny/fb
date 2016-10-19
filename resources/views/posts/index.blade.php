@@ -5,14 +5,14 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Dashboard</div>
+                    <div class="panel-heading">Home Page</div>
 
                     <div class="panel-body">
                         @foreach($posts as $post => $post_value)
                             <div class="col-sm-6 col-md-4">
                                 <div class="thumbnail">
                                     <span class="label label-primary">
-                                        {{ $post_value->date }} {{ $post_value->time }}
+                                        {{ $post_value->created_at }}
                                     </span>
                                     &nbsp;
                                     <a href="{{ route('category.show', $post_value->category->slug) }}">{{ $post_value->category->name }}</a>
@@ -25,6 +25,12 @@
                                             <a href="/post/{{ $post_value->slug }}" class="btn btn-primary" role="button">More</a>
                                         </p>
 
+                                        @foreach($post_value->tags as $tag)
+                                            <a href="{{ route('tag.show', $tag->name) }}" class="label label-danger">
+                                                {{ $tag->name }}
+                                            </a>
+                                            &nbsp;
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
@@ -32,7 +38,7 @@
                         @endforeach
                     </div>
                 </div>
-                    {{ $posts->links() }}
+                    {{ isset($path) ? $posts->setPath($path)->links() : $posts->links() }}
             </div>
         </div>
     </div>

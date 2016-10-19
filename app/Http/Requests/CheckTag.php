@@ -2,11 +2,10 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Post;
-use Illuminate\Http\Request;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 
-class CheckOfPost extends FormRequest
+class CheckTag extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,17 +25,12 @@ class CheckOfPost extends FormRequest
     public function rules(Request $request)
     {
         $rules = [
-            'slug' => 'required|min:5|max:355|unique:posts',
-            'title' => 'required|max:255',
-            'short' => 'required|max:1000',
-            'text' => 'required',
-            'img' => 'image',
-            'category_id' => 'required',
-            'tags' => 'required'
+            'name' => 'required|max:150|unique:tags',
+            'description' => 'max:500',
         ];
 
         if($request->method() === 'PUT') {
-            $rules['slug'] = 'required|min:5|max:355|unique:posts,slug,' . $request->id;
+            $rules['name'] = 'required|max:250|unique:tags,name,' . $request->id;
         }
         return $rules;
     }

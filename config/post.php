@@ -2,5 +2,4 @@
 
 return [
     'pagination' => '2',
-
 ];

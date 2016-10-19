@@ -12,8 +12,10 @@
 
     <!-- Styles -->
     <link href="/css/app.css" rel="stylesheet">
+    <link href="/css/select2.min.css" rel="stylesheet" />
 
     <!-- Scripts -->
+
     <script>
         window.Laravel = <?php echo json_encode([
             'csrfToken' => csrf_token(),
@@ -53,20 +55,42 @@
                         <li><a href="{{ url('/login') }}">Login</a></li>
                         <li><a href="{{ url('/register') }}">Register</a></li>
                     @else
+                        @if(Auth::user()->role->role === 'admin')
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                Админка <span class="caret"></span>
+                            </a>
+
+                            <ul class="dropdown-menu" role="menu">
+
+                                <li>
+                                    <a href="{{ route('admin.index') }}">Главная</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('admin.create') }}">Добавить пост</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('categories.index') }}">Все категории</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('categories.create') }}">Создать категорию</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('tags.index') }}">Все теги</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('tags.create') }}">Создать тег</a>
+                                </li>
+                            </ul>
+                        </li>
+                        @endif
+
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 {{ Auth::user()->name }} <span class="caret"></span>
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
-                                @if(Auth::user()->role->role == 'admin')
-                                    <li>
-                                        <a href="{{ route('admin.index') }}">Админка</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('admin.create') }}">Добавить пост</a>
-                                    </li>
-                                @endif
                                 <li>
                                     <a href="{{ url('/cabinet/settings') }}">Настройки</a>
                                 </li>
@@ -91,9 +115,10 @@
 
     @yield('content')
 
-    <!-- Scripts -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="/js/select2.full.js" ></script>
     <script src="/js/app.js"></script>
+
 
 </body>
 </html>
