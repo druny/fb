@@ -35,6 +35,7 @@ Route::group(['namespace' => 'Cabinet', 'roles' => ['Admin', 'User']], function(
     Route::get('email/change', ['as' => 'email.change', 'uses' => 'EmailController@change']);
     Route::post('email/update', ['as' => 'email.update', 'uses' => 'EmailController@update']);
     Route::get('email/confirm/{token}', ['as' => 'email.confirm', 'uses' => 'EmailController@confirm']);
+    Route::get('email/new/confirm/{token}', ['as' => 'new_email.confirm', 'uses' => 'EmailController@confirmNewEmail']);
 });
 
 /*

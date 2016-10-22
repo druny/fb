@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Cabinet;
 
+
 use App\Models\EmailConfirm;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -14,6 +15,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
 use App\Mail\ConfirmMail;
+use App\Mail\ConfirmNewMail;
 
 class EmailController extends Controller
 {
@@ -49,26 +51,55 @@ class EmailController extends Controller
 
     }
 
-    //When a user clicked on a link transmitted, he will see there, must enter the password, and then change email
+    //When a user clicked on a link transmitted, he will see there, must be authenticate  , and then change email
     public function confirm(Request $request, $token) {
         $current_user_id = $request->user()->id;
         $email =  EmailConfirm::token($token);
         $email->user_id;
 
-        if($email->user_id === $current_user_id) {
+        if($email->user_id == $current_user_id) {
 
-            $user = User::login($request->user()->login);
-            // На этом месте думал, делать ли отправку верификации на новый мэйл или нет
+            if($email->is_confirm == 0) {
+                $email->is_confirm = 1;
+                $email->save();
+                $user = User::login($request->user()->login);
+
+                Mail::to($email->email)->send(new ConfirmNewMail($user, $token));
+                $msg = 'Осталось только войти на новую почту и завешить подтверждение';
+            } else {
+                $msg =  'Вы уже подтвердили данное сообщение, перейдите на новый email';
+            }
+
 
         } else {
             $msg = 'Данные не сходятся :/';
         }
-        var_dump($msg);
+        return view('mail.status', ['msg' => $msg]);
     }
 
-    //'Put' method for verification password and then changing on new email
-    public function confirmEmail() {
+    //Method for verification  and  changing on new email
+    public function confirmNewEmail(Request $request, $token) {
+        $current_user_id = $request->user()->id;
+        $email =  EmailConfirm::token($token);
+        $email->user_id;
 
+        if($email->user_id == $current_user_id) {
+
+            if($email->is_confirm == 1) {
+                $user = User::login($request->user()->login);
+                $user->email = $email->email;
+                $user->save();
+                $email->delete();
+                $msg = 'Почта успешно изменена!!!';
+            } else {
+                $msg =  'Для начала подтвердите смену на старой пойте';
+            }
+
+
+        } else {
+            $msg = 'Данные не сходятся :/';
+        }
+        return view('mail.status', ['msg' => $msg]);
     }
 
     //Check any model in DB and then send message
@@ -97,6 +128,7 @@ class EmailController extends Controller
         $email->user_id = $request->user()->id;
         $email->token = $this->getToken();
         $email->email = $request->new_email;
+        $email->is_confirm = 0;
 
         if($email->save()) {
             return true;
@@ -110,6 +142,7 @@ class EmailController extends Controller
         $email = EmailConfirm::id($request->user()->id);
         $email->token = $this->getToken();
         $email->email = $request->new_email;
+        $email->is_confirm = 0;
 
         if($email->save()) {
             return true;

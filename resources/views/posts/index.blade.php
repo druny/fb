@@ -9,7 +9,7 @@
 
                     <div class="panel-body">
                         @foreach($posts as $post => $post_value)
-                            <div class="col-sm-6 col-md-4">
+                            <div class="col-sm-6">
                                 <div class="thumbnail">
                                     <span class="label label-primary">
                                         {{ $post_value->created_at }}
