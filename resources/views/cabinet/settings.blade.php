@@ -9,24 +9,27 @@
                     <div class="panel-heading">Настройки личного профиля</div>
 
                     <div class="panel-body">
-                        <form class="form-horizontal" role="form" method="POST" action="{{ url('/cabinet/settings') }}">
+                        <a class="btn btn-danger" href="{{ route('password.change') }}">Изменить пароль</a>
+                        <a class="btn btn-danger" href="{{ route('email.change') }}">Изменить E-mail</a>
+                        <form class="form-horizontal" role="form" method="POST" action="{{ route('cabinet.update', $user->login ) }}" enctype="multipart/form-data">
                             {{ csrf_field() }}
-                            @if(session('warning'))
-                                <div class="alert alert-warning">
-                                    {{ session('warning') }}
-                                </div>
-                            @endif
-                            @if(session('status'))
-                                <div class="alert alert-warning">
-                                    {{ session('status') }}
-                                </div>
-                            @endif
+                            {{ method_field('PUT') }}
 
+                            <br>
+                            <div class="col-sm-6">
+                                <label for="img" class="uploadButton">Загрузить Аватар</label>
+                                <input style="opacity: 0; z-index: -1;" type="file" multiple accept="avatar/*" name="avatar" id="img">
+
+                                <img id="img-preview" src="/uploads/avatars/150/{{ $user->avatar }}" >
+                                <br/>
+                                <a href="#" id="reset-img-preview">Удалить изображения</a>
+                            </div>
+                            <div class="clearfix"></div>
                             <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                                 <label for="name" class="col-md-4 control-label">Name</label>
 
                                 <div class="col-md-6">
-                                    <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus>
+                                    <input id="name" type="text" class="form-control" name="name" value="{{ $user->name }}" required autofocus>
 
                                     @if ($errors->has('name'))
                                         <span class="help-block">
@@ -41,7 +44,7 @@
                                 <label for="surname" class="col-md-4 control-label">Surname</label>
 
                                 <div class="col-md-6">
-                                    <input id="surname" type="text" class="form-control" name="surname" value="{{ old('surname') }}" required>
+                                    <input id="surname" type="text" class="form-control" name="surname" value="{{ $user->surname }}" required>
 
                                     @if ($errors->has('surname'))
                                         <span class="help-block">
@@ -56,7 +59,7 @@
                                 <label for="login" class="col-md-4 control-label">Login</label>
 
                                 <div class="col-md-6">
-                                    <input id="login" type="text" class="form-control" name="login" value="{{ old('login')  }}" required>
+                                    <input id="login" type="text" class="form-control" name="login" value="{{ $user->login  }}" required>
 
                                     @if ($errors->has('login'))
                                         <span class="help-block">
@@ -65,56 +68,54 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                                <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+                            <div class="form-group{{ $errors->has('age') ? ' has-error' : '' }}">
+                                <label for="age" class="col-md-4 control-label">Age</label>
 
                                 <div class="col-md-6">
-                                    <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
+                                    <input id="age" type="number" class="form-control" name="age" value="{{ $user->age }}" required>
 
-                                    @if ($errors->has('email'))
+                                    @if ($errors->has('age'))
                                         <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
+                                        <strong>{{ $errors->first('age') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="form-group{{ $errors->has('city') ? ' has-error' : '' }}">
+                                <label for="city" class="col-md-4 control-label">City</label>
+
+                                <div class="col-md-6">
+                                    <input id="city" type="text" class="form-control" name="city" value="{{ $user->city }}" required>
+
+                                    @if ($errors->has('city'))
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('city') }}</strong>
                                     </span>
                                     @endif
                                 </div>
                             </div>
 
-                            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                                <label for="password" class="col-md-4 control-label">Password</label>
-
-                                <div class="col-md-6">
-                                    <input id="password" type="password" class="form-control" name="password" required>
-
-                                    @if ($errors->has('password'))
-                                        <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-                                <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
-
-                                <div class="col-md-6">
-                                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
-
-                                    @if ($errors->has('password_confirmation'))
-                                        <span class="help-block">
-                                        <strong>{{ $errors->first('password_confirmation') }}</strong>
-                                    </span>
-                                    @endif
-                                </div>
-                            </div>
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <div class="form-group">
                                 <div class="col-md-6 col-md-offset-4">
                                     <button type="submit" class="btn btn-primary">
-                                        Register
+                                        Change
                                     </button>
                                 </div>
                             </div>
                         </form>
+                        @if(session('warning'))
+                            <br>
+                            <div class="alert alert-warning">
+                                {{ session('warning') }}
+                            </div>
+                        @endif
+                        @if(session('success'))
+                            <br>
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>

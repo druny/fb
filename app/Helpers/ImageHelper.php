@@ -15,6 +15,7 @@ class ImageHelper
     }
     public static function upload($img) {
 
+
         $name = self::getImgName($img);
         $path = public_path(config('image.path'));
 
@@ -33,14 +34,15 @@ class ImageHelper
 
     public static function uploadAvatar($img)
     {
+
         $name = self::getImgName($img);
         $path = public_path(config('image.path') . '/avatars');
 
         Image::make($img)
             ->resize(150, 150)
-            ->save($path . config('image.avatarFolder') . '/' . $name)
+            ->save($path . '/' . config('image.avatarFolder') . '/' . $name)
             ->resize(60, 60)
-            ->save($path . config('image.smallFolder') . '/' . $name);
+            ->save($path . '/' . config('image.smallFolder') . '/' . $name);
 
         return $name;
     }

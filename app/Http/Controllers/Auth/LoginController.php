@@ -97,7 +97,6 @@ class LoginController extends Controller
 
         $userConfirm = new UserConfirm();
         $token = $userConfirm->updateToken($status->id);
-
         if($status->active == 0) {
             Mail::to($status->email)->send(new ConfirmRegister($token));
             return false;

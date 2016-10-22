@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Mail\ConfirmRegister;
 use App\Models\UserConfirm;
 use App\Http\Controllers\Auth;
+use Illuminate\Support\Facades\Auth as AuthHelper;
 use Illuminate\Support\Facades\Mail;
 use App\Models\User;
 use Validator;
@@ -32,7 +33,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/cabinet';
 
     /**
      * Create a new controller instance.
@@ -69,6 +70,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+
         return  User::create([
             'name' => $data['name'],
             'surname' => $data['surname'],
@@ -83,6 +85,7 @@ class RegisterController extends Controller
     {
         $this->validator($request->all())->validate();
         $user = $this->create($request->all());
+
         $this->sendVerificationMail($user);
 
         return back()->with('status','Зайдите на введенную вами почту и продолжите регистрацию' );
@@ -105,8 +108,8 @@ class RegisterController extends Controller
             $data['msg'] = 'Аккаунт уже подтвержден или ссылка не корректна';
         } else {
             $data['msg'] = 'Аккаунт успешно подтвержден';
-            Auth::login($active);
+            AuthHelper::login($active);
         }
-        return response()->view('errors.error', $data);
+        return view('errors.error', $data);
     }
 }

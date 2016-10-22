@@ -92,7 +92,7 @@
 
                             <ul class="dropdown-menu" role="menu">
                                 <li>
-                                    <a href="{{ url('/cabinet/settings') }}">Настройки</a>
+                                    <a href="{{ route('cabinet.settings') }}">Настройки</a>
                                 </li>
                                 <li>
                                     <a href="{{ url('/logout') }}"
@@ -107,6 +107,11 @@
                                 </li>
                             </ul>
                         </li>
+                    <li class=" col-md-3 col-sm-0 col-xs-0">
+                        <a href="{{ route('cabinet.index') }}" style="margin:0; padding: 0;">
+                            <img style="border-radius: 50%; "  src="/uploads/avatars/60/{{ Auth::user()->avatar }}" >
+                        </a>
+                    </li>
                     @endif
                 </ul>
             </div>

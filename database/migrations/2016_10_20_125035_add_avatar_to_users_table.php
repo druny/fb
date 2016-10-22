@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class ConfirmUsers extends Migration
+class AddAvatarToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,9 @@ class ConfirmUsers extends Migration
      */
     public function up()
     {
-        Schema::create('confirm_users', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('user_id', 255)->unique();
-            $table->string('token', 32);
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('avatar')->default(config('image.avatar'));
         });
-
     }
 
     /**
@@ -29,6 +25,9 @@ class ConfirmUsers extends Migration
      */
     public function down()
     {
-        Schema::drop('confirm_users');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign(['avatar']);
+        });
+
     }
 }

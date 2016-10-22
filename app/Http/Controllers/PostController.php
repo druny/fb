@@ -30,8 +30,7 @@ class PostController extends Controller
     //Display of single post by Slug
     public function show($slug)
     {
-        $posts = new Post();
-        $post = $posts->getSlug($slug);
+        $post = Post::Slug($slug);
         return view('posts.showOne', ['post' => $post]);
     }
 

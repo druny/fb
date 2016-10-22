@@ -8,6 +8,11 @@
                     <div class="panel-heading">Admin page</div>
 
                     <div class="panel-body">
+                        @if(session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @endif
                         @foreach($posts as $post => $post_value)
                             <div class="col-sm-6">
                                 <div class="thumbnail">

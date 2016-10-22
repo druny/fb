@@ -14,7 +14,6 @@
 
                                     <div class="caption">
                                         <h3>{{ $tag->name }}</h3>
-                                        <h5>Slug: {{ $tag->slug }}</h5>
                                         <p>{!! $tag->description !!} </p>
 
                                         <a href="{{ route('tag.show', $tag->name) }}" class="btn btn-primary" role="button">Posts</a>

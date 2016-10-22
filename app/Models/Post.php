@@ -18,8 +18,8 @@ class Post extends Model
         return $this->belongsToMany('App\Models\Tag');
     }
 
-    public function getSlug($slug)
+    public function scopeSlug($query, $slug)
     {
-        return Post::where('slug', $slug)->firstOrFail();
+        return $query->where('slug', $slug)->firstOrFail();
     }
 }

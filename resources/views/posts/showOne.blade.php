@@ -9,26 +9,28 @@
                     <h1 class="panel-heading">{{ $post->title }}</h1>
     
                     <div class="panel-body">
+                        <span class="label label-primary">
+                            {{ $post->created_at }}
+                        </span>
+
+                        <div class="clearfix"></div>
+                            <br>
+                        <img style="width: 100%;" src="/uploads/original/{{ $post->img }}" alt="">
+                        <p>{{ $post->short }}</p>
+                        <div class="jumbotron">
+                            {!! $post->text !!}
+                        </div>
                         @foreach($post->tags as $tag)
                             <a href="{{ route('tag.show', $tag->name) }}" class="label label-danger">
                                 {{ $tag->name }}
                             </a>
                             &nbsp;
                         @endforeach
-                        <div class="clearfix"></div>
-                            <br>
-                        <img src="/uploads/800/{{ $post->img }}" alt="">
-                        <p>{{ $post->short }}</p>
-                        <div class="jumbotron">
-                            {!! $post->text !!}
-                        </div>
-                        <span class="label label-primary">
-                            {{ $post->created_at }}
-                        </span>
+                        <p class="col-sm-offset-10">
+                            <button onclick="history.go(-1)" class="btn btn-primary" role="button">Back</button>
+                        </p>
                     </div>
-                    <p class="col-sm-offset-10">
-                        <button onclick="history.go(-1)" class="btn btn-primary" role="button">Back</button>
-                    </p>
+
                 </div>
             </div>
         </div>

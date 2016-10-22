@@ -1,16 +1,7 @@
 <?php
 
 use App\Mail\ConfirmRegister;
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| This file is where you may define all of the routes that are handled
-| by your application. Just tell Laravel the URIs it should respond
-| to using a Closure or controller method. Build something great!
-|
-*/
+
 
 Auth::routes();
 Route::get('/register/confirm/{token}', 'Auth\RegisterController@confirm');
@@ -31,10 +22,27 @@ Route::group(['namespace' => 'Admin', 'roles' => 'Admin'], function() {
 });
 
 //Cabinet
+Route::group(['namespace' => 'Cabinet', 'roles' => ['Admin', 'User']], function() {
+    //Settings
+    Route::resource('cabinet', 'CabinetController', ['except' => 'show']);
+    Route::get('cabinet/settings', ['as' => 'cabinet.settings', 'uses' => 'CabinetController@edit']);
+
+    //Password
+    Route::get('password/change', ['as' => 'password.change', 'uses' => 'PasswordController@change']);
+    Route::put('password/update', ['as' => 'password.update', 'uses' => 'PasswordController@update']);
+
+    //E-mail
+    Route::get('email/change', ['as' => 'email.change', 'uses' => 'EmailController@change']);
+    Route::post('email/update', ['as' => 'email.update', 'uses' => 'EmailController@update']);
+    Route::get('email/confirm/{token}', ['as' => 'email.confirm', 'uses' => 'EmailController@confirm']);
+});
+
+/*
 Route::group(['prefix' => 'cabinet', 'roles' => ['Admin', 'User']], function() {
     Route::get('/', 'CabinetController@index');
-    Route::get('/settings', 'CabinetController@settings');
-});
+    Route::get('settings', ['as' => 'cabinet.settings', 'uses' => 'CabinetController@edit']);
+
+});*/
 
 Route::get('/tag/{tag}', [
    'uses' => 'PostController@showPostsByTag',
@@ -44,6 +52,7 @@ Route::get('/category/{category}', [
     'uses' => 'PostController@showPostsByCategory',
     'as' => 'category.show'
 ]);
+
 
 
 //test

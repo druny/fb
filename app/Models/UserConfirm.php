@@ -26,6 +26,7 @@ class UserConfirm extends Model
         return $token;
     }
 
+
     public function updateToken($id) {
         $token = $this->getToken();
 

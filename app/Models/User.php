@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Role;
@@ -18,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'surname', 'login', 'email', 'password',  'role_id', 'active',
+        'name', 'surname', 'login', 'email', 'password',  'role_id', 'active', 'age', 'city',
     ];
 
     /**
@@ -34,6 +35,9 @@ class User extends Authenticatable
         return $this->belongsTo('App\Models\Role');
     }
 
+    public function confirm_users() {
+        return $this->belongsTo('App\Models\EmailConfirm');
+    }
 
     public function hasAnyRole($roles) {
         if(is_array($roles)) {
@@ -79,6 +83,11 @@ class User extends Authenticatable
         }
         return false;
     }
+
+    public function scopeLogin($query, $login) {
+        return $query->where('login', $login)->firstOrFail();
+    }
+
 
 
 }

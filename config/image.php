@@ -22,6 +22,8 @@ return array(
     'mediumFolder' => '800',
     'avatarFolder' => '150',
     'smallFolder' => '60',
-    'path' => 'uploads'
+    'path' => 'uploads',
+
+    'avatar' => 'guest_user.png'
 
 );

@@ -48,17 +48,10 @@ class AdminController extends Controller
     }
 
 
-    public function show($id)
-    {
-        echo 'GET	/photos/{photo}	show	photos.show';
-    }
-
-
     public function edit(Request $request, $slug)
     {
 
-        $posts = new Post();
-        $post = $posts->getSlug($slug);
+        $post = Post::slug($slug);
         $categories = Category::all();
         return view('admin.edit', ['post' => $post, 'categories' => $categories]);
     }
@@ -67,8 +60,7 @@ class AdminController extends Controller
     public function update(Requests\CheckOfPost $request, $slug)
     {
 
-        $posts = new Post();
-        $post = $posts->getSlug($slug);
+        $post = Post::slug($slug);
 
         $img_name = $post->img;
         $post->fill($request->all());
@@ -89,11 +81,11 @@ class AdminController extends Controller
     {
         $posts = new Post();
         $post = $posts->getSlug($slug);
-
+        $post->tags()->detach();
         if($post->img) {
             ImageHelper::delete($post->img);
         }
         $post->delete();
-        return redirect()->route('admin.index');
+        return redirect()->back()->with('success', 'Статья успешно удалена');
     }
 }
