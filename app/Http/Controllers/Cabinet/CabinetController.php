@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\ImageHelper;
+use App\Models\Tag;
+use App\Models\Feed;
 
 class CabinetController extends Controller
 {
@@ -25,6 +27,11 @@ class CabinetController extends Controller
     public function index()
     {
         $data['user'] = Auth::user();
+
+        $data['tags'] = Tag::all();
+        $data['feeds'] = Feed::id(Auth::id())->get();
+
+
         return view('cabinet.index', $data);
     }
 

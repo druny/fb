@@ -39,6 +39,10 @@ class User extends Authenticatable
         return $this->belongsTo('App\Models\EmailConfirm');
     }
 
+    public function feeds() {
+        return $this->belongsTo('App\Models\Feed');
+    }
+
     public function hasAnyRole($roles) {
         if(is_array($roles)) {
             foreach($roles as $role) {

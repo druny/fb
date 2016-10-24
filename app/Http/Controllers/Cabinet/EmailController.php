@@ -92,7 +92,7 @@ class EmailController extends Controller
                 $email->delete();
                 $msg = 'Почта успешно изменена!!!';
             } else {
-                $msg =  'Для начала подтвердите смену на старой пойте';
+                $msg =  'Для начала подтвердите смену на старой почте';
             }
 
 

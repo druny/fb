@@ -85,6 +85,9 @@
                         </li>
                         @endif
 
+                        <li>
+                            <a href="{{ route('feed.index') }}">FEED</a>
+                        </li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 {{ Auth::user()->name }} <span class="caret"></span>
@@ -107,7 +110,7 @@
                                 </li>
                             </ul>
                         </li>
-                    <li class=" col-md-3 col-sm-0 col-xs-0">
+                    <li class=" col-sm-0 col-xs-0">
                         <a href="{{ route('cabinet.index') }}" style="margin:0; padding: 0;">
                             <img style="border-radius: 50%; "  src="/uploads/avatars/60/{{ Auth::user()->avatar }}" >
                         </a>

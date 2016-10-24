@@ -36,6 +36,10 @@ Route::group(['namespace' => 'Cabinet', 'roles' => ['Admin', 'User']], function(
     Route::post('email/update', ['as' => 'email.update', 'uses' => 'EmailController@update']);
     Route::get('email/confirm/{token}', ['as' => 'email.confirm', 'uses' => 'EmailController@confirm']);
     Route::get('email/new/confirm/{token}', ['as' => 'new_email.confirm', 'uses' => 'EmailController@confirmNewEmail']);
+
+    //feed by tags
+    Route::get('feed', ['as' => 'feed.index', 'uses' => 'FeedController@index']);
+    Route::post('feed/tags', ['as' => 'feed.feed', 'uses' => 'FeedController@feed']);
 });
 
 /*
