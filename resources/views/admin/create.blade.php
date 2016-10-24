@@ -19,7 +19,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
-                <div class="panel panel-default">
+                <div class="panel panel-danger">
                     <div class="panel-heading">Added new post</div>
 
                     <div class="panel-body">
@@ -104,7 +104,7 @@
                             <div class="form-group{{ $errors->has('short') ? ' has-error' : '' }}">
                                 <label for="short" class="col-md-4 control-label">Short text</label>
 
-                                <div class="col-md-6">
+                                <div class="col-xs-12">
                                     <textarea id="short" type="text" class="form-control" name="short" value="{{ old('short') }}" required>{{ old('short') }}</textarea>
                                     @if ($errors->has('short'))
                                         <span class="help-block">
@@ -119,7 +119,7 @@
                             <div class="form-group{{ $errors->has('text') ? ' has-error' : '' }}">
                                 <label for="create-text" class="col-md-4 control-label">Text</label>
 
-                                <div class="col-md-6">
+                                <div class="col-xs-12">
                                     <textarea id="create-text"  type="text" class="form-control" name="text" value="{{ old('text') }}" >{{ old('text') }}</textarea>
                                     @if ($errors->has('text'))
                                         <span class="help-block">

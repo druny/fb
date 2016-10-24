@@ -16,9 +16,8 @@
 
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Added new tag
-                    </div>
+                <div class="panel panel-danger">
+                    <div class="panel-heading">Added new tag</div>
                     <div class="panel-body">
                         <form class="form-horizontal" role="form" method="POST" action="{{ route('tags.store') }}"  enctype="multipart/form-data">
 
@@ -54,7 +53,7 @@
                             <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
                                 <label for="description" class="col-md-4 control-label">Text</label>
 
-                                <div class="col-md-6">
+                                <div class="col-xs-12">
                                     <textarea id="description"  type="text" class="form-control" name="description" ></textarea>
                                     @if ($errors->has('description'))
                                         <span class="help-block">

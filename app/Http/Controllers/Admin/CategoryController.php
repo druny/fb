@@ -46,7 +46,8 @@ class CategoryController extends Controller
 
     public function edit($slug)
     {
-        $category = Category::slug($slug);
+        $category = Category::slug($slug)->firstOrFail();
+
         return view('admin.category.edit', ['category' => $category]);
     }
 

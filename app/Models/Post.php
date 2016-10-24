@@ -18,6 +18,10 @@ class Post extends Model
         return $this->belongsToMany('App\Models\Tag');
     }
 
+    public function comments() {
+        return $this->hasMany('App\Models\Tag');
+    }
+
     public function scopeSlug($query, $slug)
     {
         return $query->where('slug', $slug)->firstOrFail();

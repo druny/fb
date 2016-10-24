@@ -5,26 +5,75 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Dashboard</div>
+            <div class="panel panel-primary">
+                <div class="panel-heading">Личный кабинет</div>
 
                 <div class="panel-body">
-                   Привет {{ $user->name }} {{ $user->surname }}
-                   <p>Твой email: {{ $user->email }}</p>
-                    <p>Возраст: {{ $user->age }}</p>
-                    <p>Город: {{ $user->city }}</p>
-                    <p>Тип пользователя: {{ $user->role->role }}</p>
-                    <p>Дата регистрации: {{ $user->created_at }}</p>
+                    <table class="table-responsive table">
+                        <div class="col-sm-9">
+                            <h3>Привет {{ $user->name }} {{ $user->surname }}</h3>
+                        </div>
+                        <div class="col-sm-3">
+                            <img style="border-radius: 50%; "  src="/uploads/avatars/150/{{ $user->avatar }}" >
+                        </div>
+                        <tr>
+                            <th>
+                                <p>Твой email: </p>
+                            </th>
+                            <td>
+                                <p>{{ $user->email }}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <p>Логин: </p>
+                            </th>
+                            <td>
+                                <p>{{ $user->login }}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <p>Возраст: </p>
+                            </th>
+                            <td>
+                                <p>{{ $user->age }}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <p>Город:</p>
+                            </th>
+                            <td>
+                                <p>{{ $user->city }}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <p>Тип пользователя: </p>
+                            </th>
+                            <th>
+                                <p>{{ $user->role->role }}</p>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <p>Дата регистрации: </p>
+                            </th>
+                            <td>
+                                <p>{{ $user->created_at }}</p>
+                            </td>
+                        </tr>
+                    </table>
+
+
                     <br>
-                    <h4>Выберете теги, по которым вы бы отели видеть новости в вашей ленте</h4>
+                    <h4>Выберете теги, по которым вы бы хотели видеть новости в вашей ленте</h4>
 
                     <form class="form-horizontal" role="form" action="{{ route('feed.feed') }}" method="post">
 
                         {{ csrf_field() }}
                         {{ method_field('POST') }}
-
-
-
 
                         @foreach($tags as $tag)
 

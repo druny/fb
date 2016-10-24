@@ -58,6 +58,7 @@ Route::get('/category/{category}', [
     'as' => 'category.show'
 ]);
 
+Route::resource('comment', 'CommentController', ['expect' => ['create', 'show', 'index']]);
 
 
 //test

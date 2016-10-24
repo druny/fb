@@ -30,7 +30,8 @@ class PostController extends Controller
     //Display of single post by Slug
     public function show($slug)
     {
-        $post = Post::Slug($slug);
+        $post = Post::slug($slug);
+
         return view('posts.showOne', ['post' => $post]);
     }
 
@@ -41,7 +42,7 @@ class PostController extends Controller
         return view('posts.index', ['posts' => $posts, 'path' => $request->url()]);
     }
 
-    //Display posts bu tag
+    //Display posts by tag
     public function showPostsByTag(Request $request, $tag) {
         $tagPosts = Tag::tag($tag)->firstOrFail()->posts;
         $posts = PaginateHelper::paginate($tagPosts, config('post.pagination'));
