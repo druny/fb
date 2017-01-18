@@ -63,7 +63,8 @@ $('#form').bind('reset', function () {
 });
 
 //input style
-
-document.getElementById('trigger').onclick = function(){
-    document.getElementById('file').click();
+if(document.getElementById('trigger')) {
+    document.getElementById('trigger').onclick = function(){
+        document.getElementById('file').click();
+    }
 }

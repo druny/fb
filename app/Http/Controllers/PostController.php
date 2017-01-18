@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Post;
 use App\Models\Category;
 use App\Models\Tag;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 use Validator;
 
@@ -31,8 +32,13 @@ class PostController extends Controller
     public function show($slug)
     {
         $post = Post::slug($slug);
+        $comments = Comment::id($post->id)->get();
 
-        return view('posts.showOne', ['post' => $post]);
+        return view('posts.showOne', [
+                'post' => $post,
+                'comments' => $comments,
+            ]
+        );
     }
 
     //Display posts by category

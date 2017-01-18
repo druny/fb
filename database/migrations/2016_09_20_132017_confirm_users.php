@@ -15,8 +15,8 @@ class ConfirmUsers extends Migration
     {
         Schema::create('confirm_users', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('user_id', 255)->unique();
-            $table->string('token', 32);
+            $table->string('user_id', 250)->unique()->references('id')->on('users');
+            $table->string('token', 250);
             $table->timestamps();
         });
 
@@ -30,5 +30,6 @@ class ConfirmUsers extends Migration
     public function down()
     {
         Schema::drop('confirm_users');
+        Schema::dropForeign('confirm_users_user_id_foreign');
     }
 }

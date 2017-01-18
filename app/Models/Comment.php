@@ -17,4 +17,8 @@ class Comment extends Model
     {
         return $this->belongsTo('App\Models\User');
     }
+
+    public static function scopeId($query, $post_id) {
+        return $query->where('post_id', '=', $post_id);
+    }
 }
